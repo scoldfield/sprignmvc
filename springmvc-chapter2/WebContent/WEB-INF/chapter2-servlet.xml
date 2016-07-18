@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- HandlerMapping: BeanNameUrlHandlerMapping表示将请求的url和Bean名字映射，如url为"上下文/hello"，则Spring配置文件必须有一个名字为"/hello"的bean，上下文默认忽略 -->
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+	
+	<!-- HandlerAdapter: SimpleControllerHandlerAdapter表示所有实现了ogr.springframework.web.servlet.Controller接口的bean都可以作为springMVC中的处理器。如果需要其他类型的处理器可以通过实现HandlerAdapter来解决 -->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+
+	<!-- ViewResolver: InternalResourceViewResolver用于支持Servlet、jsp视图解析。其中，viewClass为JstlView表示JSP模板页面需要使用JSTL标签库，classpath中必须包含jstl的相关jar包; 
+	prefix和suffix表示查找视图页面的前缀和后缀(前缀[逻辑视图名]后缀)，比如传进来的逻辑视图名为hello，则该jsp视图页面应该存放在"WEB-INF/jsp/hello.jsp" -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/jsp/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<!-- 处理器: 需要添加到spring配置文件，让其接收spring IOC容器管理
+		name="/hello"：前边配置的BeanNameUrlHandlerMapping，表示如果请求的url为"上下文/hello"，则会交给该bean进行处理
+	 -->
+	<bean name="/hello" class="com.cmcc.controller.HelloController"/>
+
+</beans>
